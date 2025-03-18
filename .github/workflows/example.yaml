@@ -28,4 +28,4 @@ jobs:
             ${{ runner.os }}-terragrunt-
       - name: Init Terraform configuration
         run: |
-          terraform init
+          terragrunt init
