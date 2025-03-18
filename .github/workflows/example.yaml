@@ -19,6 +19,7 @@ jobs:
         with:
           tg_version: 0.67.0
           tg_command: 'hclfmt --terragrunt-check --terragrunt-diff'
+          tf_version: 1.7.5
       - name: Set TG_PROVIDER_CACHE
         run: |
           echo "TG_PROVIDER_CACHE=1" >>"$GITHUB_ENV"
