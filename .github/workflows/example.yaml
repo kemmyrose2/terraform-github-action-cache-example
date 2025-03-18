@@ -14,18 +14,18 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.7.5
-      - name: Configure Terraform plugin cache
+      - name: Set TG_PROVIDER_CACHE
         run: |
-          echo "TF_PLUGIN_CACHE_DIR=$HOME/.terraform.d/plugin-cache" >>"$GITHUB_ENV"
-          mkdir --parents "$HOME/.terraform.d/plugin-cache"
+          echo "TG_PROVIDER_CACHE=1" >>"$GITHUB_ENV"
+        
       - name: Cache Terraform
         uses: actions/cache@v4
         with:
           path: |
-            ~/.terraform.d/plugin-cache
-          key: terraform-${{ runner.os }}-${{ hashFiles('**/.terraform.lock.hcl') }}
+            .terragrunt-cache
+          key: ${{ runner.os }}-terragrunt-${{ hashFiles('**/*.tf') }}
           restore-keys: |
-            terraform-${{ runner.os }}-
+            ${{ runner.os }}-terragrunt-
       - name: Init Terraform configuration
         run: |
           terraform init
