@@ -7,6 +7,7 @@ jobs:
   main:
     name: Example
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -34,26 +35,24 @@ jobs:
           tf_version: 1.7.5
 
       - name: Set TG_PROVIDER_CACHE
-        run: |
-          echo "TG_PROVIDER_CACHE=1" >>"$GITHUB_ENV"
+        run: echo "TG_PROVIDER_CACHE=1" >>"$GITHUB_ENV"
 
-      - name: Cache Terraform
+      - name: Restore Terraform Cache
         uses: actions/cache/restore@v4
         with:
-          path: |
-            ~/.terragrunt-cache
-          key: ${{ runner.os }}-terragrunt-${{ hashFiles('**/*.tf') }}
+          path: ~/.terragrunt-cache
+          key: ${{ runner.os }}-terragrunt-${{ hashFiles('**/*.hcl') }}
           restore-keys: |
             ${{ runner.os }}-terragrunt-
 
       - name: Init Terraform configuration
-        run: |
-          terragrunt init
-      - name: Cache Terraform
+        run: terragrunt init
+
+      - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
-          path: |
-            ~/.terragrunt-cache
-          key: ${{ runner.os }}-terragrunt-${{ hashFiles('**/*.tf') }}
+          path: ~/.terragrunt-cache
+          key: ${{ runner.os }}-terragrunt-${{ hashFiles('**/*.hcl') }}
+
          
 
