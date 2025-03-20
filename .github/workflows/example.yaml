@@ -44,33 +44,32 @@ jobs:
         id: date
         run: echo "CACHE_DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
 
+      - name: Set Terraform Plugin Cache Directory
+        run: |
+          mkdir -p /home/runner/.terragrunt-cache
+          echo "TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV
+      
       - name: Restore Terraform Cache
         uses: actions/cache/restore@v4
         with:
-          path: ${{ env.TF_PLUGIN_CACHE_DIR }}
-          key: ${{ runner.os }}-terragrunt-${{ env.CACHE_DATE }}-${{ hashFiles('**/*.hcl') }}
+          path: /home/runner/.terragrunt-cache
+          key: ${{ runner.os }}-terragrunt-${{ hashFiles('**/*.hcl') }}
           restore-keys: |
             ${{ runner.os }}-terragrunt-
-            
-      - name: Verify Provider Cache Structure
-        run: |
-          echo "Checking provider cache structure..."
-          find ${{ env.TF_PLUGIN_CACHE_DIR }}/registry.terraform.io -type f
-            
+      
+      - name: Verify Cache Before Init
+        run: ls -lah /home/runner/.terragrunt-cache/registry.terraform.io || echo "Cache is empty"
+      
       - name: Init Terraform configuration
         run: |
-          ls -lah ${{ env.TF_PLUGIN_CACHE_DIR }}
-          terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir ${{ env.TF_PLUGIN_CACHE_DIR }}
-        
-      # - name: Ensure Terragrunt cache directory exists
-      #   run: |
-      #     cat ~/.terragrunt-cache/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64/terraform-provider-aws_v5.38.0_x5
-          
+          export TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache
+          terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir "$TF_PLUGIN_CACHE_DIR"
+      
+      - name: Verify Provider Cache After Init
+        run: find /home/runner/.terragrunt-cache/registry.terraform.io -type f
+      
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
-          path:  ${{ env.TF_PLUGIN_CACHE_DIR }}
+          path: /home/runner/.terragrunt-cache
           key: ${{ runner.os }}-terragrunt-${{ env.CACHE_DATE }}-${{ hashFiles('**/*.hcl') }}
-
-         
-
