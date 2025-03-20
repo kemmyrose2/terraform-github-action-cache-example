@@ -55,7 +55,7 @@ jobs:
         
       - name: Ensure Terragrunt cache directory exists
         run: |
-          ls -lah ~/.terragrunt-cache/registry.terraform.io/hashicorp/aws/5.38.0
+          ls -lah ~/.terragrunt-cache/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64
           
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
