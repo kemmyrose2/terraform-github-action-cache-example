@@ -36,6 +36,11 @@ jobs:
 
       - name: Set TG_PROVIDER_CACHE
         run: echo "TG_PROVIDER_CACHE=1" >>"$GITHUB_ENV"
+
+      - name: Set Terraform Plugin Cache Directory
+        run: |
+          mkdir -p /home/runner/.terragrunt-cache   # Full path to ensure it's created
+          echo "TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV  # Set full path for Terraform
         
       - name: Set Timestamp Variable
         id: date
@@ -44,28 +49,23 @@ jobs:
       - name: Restore Terraform Cache
         uses: actions/cache/restore@v4
         with:
-          path: ~/.terragrunt-cache
+          path: $TF_PLUGIN_CACHE_DIR
           key: ${{ runner.os }}-terragrunt-${{ env.CACHE_DATE }}-${{ hashFiles('**/*.hcl') }}
           restore-keys: |
             ${{ runner.os }}-terragrunt-
             
-      - name: Set Terraform Plugin Cache Directory
-        run: |
-          mkdir -p /home/runner/.terragrunt-cache   # Full path to ensure it's created
-          echo "TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV  # Set full path for Terraform
-
       - name: Init Terraform configuration
         run: |
           terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir $TF_PLUGIN_CACHE_DIR
         
-      - name: Ensure Terragrunt cache directory exists
-        run: |
-          cat ~/.terragrunt-cache/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64/terraform-provider-aws_v5.38.0_x5
+      # - name: Ensure Terragrunt cache directory exists
+      #   run: |
+      #     cat ~/.terragrunt-cache/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64/terraform-provider-aws_v5.38.0_x5
           
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
-          path: ~/.terragrunt-cache
+          path: $TF_PLUGIN_CACHE_DIR
           key: ${{ runner.os }}-terragrunt-${{ env.CACHE_DATE }}-${{ hashFiles('**/*.hcl') }}
 
          
