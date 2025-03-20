@@ -51,10 +51,7 @@ jobs:
 
       - name: Init Terraform configuration
         run: |
-            terragrunt run-all init \
-            --terragrunt-non-interactive \
-            --terragrunt-provider-cache \
-            --terragrunt-provider-cache-dir ~/.terragrunt-cache
+          terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir ~/.terragrunt-cache
         
       # - name: Ensure Terragrunt cache directory exists
       #   run: |
