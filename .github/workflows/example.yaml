@@ -51,8 +51,8 @@ jobs:
             
       - name: Set Terraform Plugin Cache Directory
         run: |
-          mkdir -p ~/.terragrunt-cache
-          echo "TF_PLUGIN_CACHE_DIR=~/.terragrunt-cache" >> $GITHUB_ENV
+          mkdir -p /home/runner/.terragrunt-cache   # Full path to ensure it's created
+          echo "TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV  # Set full path for Terraform
 
       - name: Init Terraform configuration
         run: |
