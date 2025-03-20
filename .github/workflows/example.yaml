@@ -48,6 +48,8 @@ jobs:
           key: ${{ runner.os }}-terragrunt-${{ env.CACHE_DATE }}-${{ hashFiles('**/*.hcl') }}
           restore-keys: |
             ${{ runner.os }}-terragrunt-
+      - name: Set Terraform Plugin Cache Directory
+        run: echo "TF_PLUGIN_CACHE_DIR=~/.terragrunt-cache" >> $GITHUB_ENV
 
       - name: Init Terraform configuration
         run: |
