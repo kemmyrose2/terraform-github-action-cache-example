@@ -35,11 +35,10 @@ jobs:
           tf_version: 1.7.5
 
       - name: Set TG_PROVIDER_CACHE
-        run: echo "TG_PROVIDER_CACHE=1" >>"$GITHUB_ENV"
-
-      - name: Set Terraform Plugin Cache Directory
         run: |
-          mkdir -p /home/runner/.terragrunt-cache   # Full path to ensure it's created
+          mkdir /home/runner/.terragrunt-cache
+          echo "TG_PROVIDER_CACHE=1" >>"$GITHUB_ENV"
+          echo "TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV    
           
       - name: Set Timestamp Variable
         id: date
@@ -52,6 +51,7 @@ jobs:
           key: ${{ runner.os }}-terragrunt-${{ env.CACHE_DATE }}-${{ hashFiles('**/*.hcl') }}
           restore-keys: |
             ${{ runner.os }}-terragrunt-
+            
       - name: Verify Provider Cache Structure
         run: |
           echo "Checking provider cache structure..."
@@ -59,8 +59,6 @@ jobs:
             
       - name: Init Terraform configuration
         run: |
-          export TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache
-          echo "TF_PLUGIN_CACHE_DIR=$TF_PLUGIN_CACHE_DIR"
           ls -lah "$TF_PLUGIN_CACHE_DIR"
           terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir "$TF_PLUGIN_CACHE_DIR"
         
