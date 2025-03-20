@@ -53,10 +53,9 @@ jobs:
         run: |
           terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir ~/.terragrunt-cache
         
-      # - name: Ensure Terragrunt cache directory exists
-      #   run: |
-      #     mkdir -p ~/.terragrunt-cache  # Create the cache directory if it doesn't exist
-      #     ls -lah ~/.terragrunt-cache
+      - name: Ensure Terragrunt cache directory exists
+        run: |
+          ls -lah ~/.terragrunt-cache
           
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
