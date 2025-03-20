@@ -59,7 +59,7 @@ jobs:
             
       - name: Init Terraform configuration
         run: |
-          ls -lah "$TF_PLUGIN_CACHE_DIR"
+          ls -lah ${{ env.TF_PLUGIN_CACHE_DIR }}
           terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir ${{ env.TF_PLUGIN_CACHE_DIR }}
         
       # - name: Ensure Terragrunt cache directory exists
