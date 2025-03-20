@@ -47,7 +47,7 @@ jobs:
       - name: Restore Terraform Cache
         uses: actions/cache/restore@v4
         with:
-          path: /home/runner/.terragrunt-cache
+          path: $TF_PLUGIN_CACHE_DIR
           key: ${{ runner.os }}-terragrunt-${{ env.CACHE_DATE }}-${{ hashFiles('**/*.hcl') }}
           restore-keys: |
             ${{ runner.os }}-terragrunt-
@@ -55,7 +55,7 @@ jobs:
       - name: Verify Provider Cache Structure
         run: |
           echo "Checking provider cache structure..."
-          find /home/runner/.terragrunt-cache/registry.terraform.io -type f
+          find $TF_PLUGIN_CACHE_DIR/registry.terraform.io -type f
             
       - name: Init Terraform configuration
         run: |
@@ -69,7 +69,7 @@ jobs:
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
-          path: /home/runner/.terragrunt-cache
+          path:  $TF_PLUGIN_CACHE_DIR
           key: ${{ runner.os }}-terragrunt-${{ env.CACHE_DATE }}-${{ hashFiles('**/*.hcl') }}
 
          
