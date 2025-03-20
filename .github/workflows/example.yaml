@@ -59,14 +59,17 @@ jobs:
       
       - name: Verify Cache Before Init
         run: ls -lah /home/runner/.terragrunt-cache/registry.terraform.io || echo "Cache is empty"
+
+      - name: Check Cached Provider After Init
+        run: ls -lah /home/runner/.terragrunt-cache/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64/
       
       - name: Init Terraform configuration
         run: |
           export TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache
           terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir "$TF_PLUGIN_CACHE_DIR"
       
-      - name: Verify Provider Cache After Init
-        run: find /home/runner/.terragrunt-cache/registry.terraform.io -type f
+      - name: Check Cached Provider After Init
+        run: ls -lah /home/runner/.terragrunt-cache/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64/
       
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
