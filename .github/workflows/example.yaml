@@ -38,7 +38,7 @@ jobs:
         run: |
           mkdir /home/runner/.terragrunt-cache
           echo "TG_PROVIDER_CACHE=1" >>"$GITHUB_ENV"
-          echo "TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV    
+          echo "TG_PROVIDER_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV    
           
       - name: Set Timestamp Variable
         id: date
@@ -47,7 +47,7 @@ jobs:
       - name: Set Terraform Plugin Cache Directory
         run: |
           mkdir -p /home/runner/.terragrunt-cache
-          echo "TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV
+          echo "TG_PROVIDER_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV
       
       - name: Restore Terraform Cache
         uses: actions/cache/restore@v4
@@ -65,8 +65,8 @@ jobs:
       
       - name: Init Terraform configuration
         run: |
-          export TF_PLUGIN_CACHE_DIR=/home/runner/.terragrunt-cache
-          terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir "$TF_PLUGIN_CACHE_DIR"
+          export TG_PROVIDER_CACHE_DIR=/home/runner/.terragrunt-cache
+          terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir "$TG_PROVIDER_CACHE_DIR"
       
       - name: Check Cached Provider After Init
         run: ls -lah /home/runner/.terragrunt-cache/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64/
