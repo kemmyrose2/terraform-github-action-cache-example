@@ -52,6 +52,10 @@ jobs:
           key: ${{ runner.os }}-terragrunt-${{ env.CACHE_DATE }}-${{ hashFiles('**/*.hcl') }}
           restore-keys: |
             ${{ runner.os }}-terragrunt-
+      - name: Verify Provider Cache Structure
+        run: |
+          echo "Checking provider cache structure..."
+          find /home/runner/.terragrunt-cache/registry.terraform.io -type f
             
       - name: Init Terraform configuration
         run: |
