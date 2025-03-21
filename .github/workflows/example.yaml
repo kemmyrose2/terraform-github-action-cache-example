@@ -35,32 +35,27 @@ jobs:
         run: echo "CACHE_DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
       
       - name: Restore Terraform Cache
-        id: cache
         uses: actions/cache/restore@v4
         with:
-          path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: terragrunt-cache-${{ runner.os }}-${{ github.run_id }}
+          path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64
+          key: terragrunt-cache-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             terragrunt-cache-${{ runner.os }}-
             
-      - name: Cache Hit Status
-        run: echo "Cache hit:${{ steps.cache.outputs.cache-hit }}"
-
+      - name: Check Cached Provider After Init
+        run: echo $TERRAGRUNT_PROVIDER_CACHE_DIR
+      
       - name: Init Terraform configuration
         run: |
           terragrunt run-all init \
             --terragrunt-provider-cache \
             --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR 
-
-      - name: List Cached Plugin Directory 
-        run: ls -alh $TERRAGRUNT_PROVIDER_CACHE_DIR/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64
-
-
       
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
-          path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: terragrunt-cache-${{ runner.os }}-${{ github.run_id }}
+          path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64
+          key: terragrunt-cache-${{ runner.os }}-${{ github.sha }}
+
 
 
