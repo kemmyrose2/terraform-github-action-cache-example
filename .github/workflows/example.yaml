@@ -53,9 +53,9 @@ jobs:
         run: |
           export TF_PLUGIN_CACHE_DIR=$TERRAGRUNT_PROVIDER_CACHE_DIR/registry.terraform.io
           terragrunt run-all init \
-            --terragrunt-provider-cache \
-            --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64 \
-            -get-plugins=false
+          --terragrunt-provider-cache \
+          --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64 \
+          -get=false
           
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
