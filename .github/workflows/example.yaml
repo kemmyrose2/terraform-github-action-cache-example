@@ -52,7 +52,7 @@ jobs:
             --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR 
 
       - name: List Cache Directory
-        run:  $TERRAGRUNT_PROVIDER_CACHE_DIR/registry.terraform.io
+        run:  ls -alh $TERRAGRUNT_PROVIDER_CACHE_DIR/registry.terraform.io
       
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
