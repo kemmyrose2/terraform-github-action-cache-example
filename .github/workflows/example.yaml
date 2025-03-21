@@ -50,6 +50,9 @@ jobs:
           terragrunt run-all init \
             --terragrunt-provider-cache \
             --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR 
+
+      - name: List Cache Directory
+        run: ls -alh $TERRAGRUNT_PROVIDER_CACHE_DIR
       
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
