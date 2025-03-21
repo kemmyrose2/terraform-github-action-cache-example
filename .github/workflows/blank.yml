@@ -26,6 +26,8 @@ jobs:
           key: terraform-${{ runner.os }}-${{ hashFiles('**/.terraform.lock.hcl') }}
           restore-keys: |
             terraform-${{ runner.os }}-
+      - name: ls 
+        run: ls -lah $HOME/.terraform.d/plugin-cach
       - name: Init Terraform configuration
         run: |
           terraform init
