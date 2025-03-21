@@ -38,13 +38,13 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: terragrunt-cache-${{ runner.os }}-${{ github.sha }}
+          key: terragrunt-cache-${{ runner.os }}-${{ github.run_id }}
           restore-keys: |
             terragrunt-cache-${{ runner.os }}-
             
-      - name: Check Cached Provider After Init
-        run: echo $TERRAGRUNT_PROVIDER_CACHE_DIR
-      
+      - name: Cache Hit Status
+        run: echo "Cache hit:${{ steps.cache.outputs.cache-hit }}"
+
       - name: Init Terraform configuration
         run: |
           terragrunt run-all init \
@@ -55,6 +55,6 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: terragrunt-cache-${{ runner.os }}-${{ github.sha }}
+          key: terragrunt-cache-${{ runner.os }}-${{ github.run_id }}
 
 
