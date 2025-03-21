@@ -3,7 +3,7 @@ name: Terraform provider cache example
 on:
   push
 
-env: 
+env:
   TERRAGRUNT_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
         run: |
           wget -qO- https://github.com/gruntwork-io/terragrunt/releases/download/v0.67.0/terragrunt_linux_amd64 > /usr/local/bin/terragrunt
           chmod +x /usr/local/bin/terragrunt
-
+          
       - name: Verify Terragrunt Installation
         run: |
           which terragrunt
@@ -35,28 +35,25 @@ jobs:
         run: echo "CACHE_DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
       
       - name: Restore Terraform Cache
-        id: cache
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: ${{ runner.os }}-terragrunt-${{ hashFiles('**/*.hcl') }}
+          key: terragrunt-cache-${{ runner.os }}-v1
           restore-keys: |
-            ${{ runner.os }}-terragrunt-
-
-      - name: Cache Hit Status
-        run: echo "Cache hit:${{ steps.cache.outputs.cache-hit }}" 
+            terragrunt-cache-${{ runner.os }}-
+            
+      - name: Check Cached Provider After Init
+        run: echo $TERRAGRUNT_PROVIDER_CACHE_DIR
       
       - name: Init Terraform configuration
         run: |
           terragrunt run-all init \
             --terragrunt-provider-cache \
             --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR 
-
-      - name: List Cache Directory
-        run:  ls -alh $TERRAGRUNT_PROVIDER_CACHE_DIR/registry.terraform.io/hashicorp/aws/5.38.0
       
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: ${{ runner.os }}-terragrunt-${{ hashFiles('**/*.hcl') }}
+          key: terragrunt-cache-${{ runner.os }}-v1
+
