@@ -3,6 +3,9 @@ name: Terraform provider cache example
 on:
   push
 
+env: 
+  TERRAGRUNT_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
+
 jobs:
   main:
     name: Example
@@ -26,53 +29,28 @@ jobs:
         run: |
           which terragrunt
           terragrunt --version
-
-      - name: Check terragrunt HCL
-        uses: gruntwork-io/terragrunt-action@v2
-        with:
-          tg_version: 0.67.0
-          tg_command: 'hclfmt --terragrunt-check --terragrunt-diff'
-          tf_version: 1.7.5
-
-      - name: Set TG_PROVIDER_CACHE
-        run: |
-          mkdir /home/runner/.terragrunt-cache
-          echo "TG_PROVIDER_CACHE=1" >>"$GITHUB_ENV"
-          echo "TG_PROVIDER_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV    
           
       - name: Set Timestamp Variable
         id: date
         run: echo "CACHE_DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
-
-      - name: Set Terraform Plugin Cache Directory
-        run: |
-          mkdir -p /home/runner/.terragrunt-cache
-          echo "TG_PROVIDER_CACHE_DIR=/home/runner/.terragrunt-cache" >> $GITHUB_ENV
       
       - name: Restore Terraform Cache
         uses: actions/cache/restore@v4
         with:
-          path: /home/runner/.terragrunt-cache
+          path: ${{ env.TERRAGRUNT_DOWNLOAD_DIR }}
           key: ${{ runner.os }}-terragrunt-${{ hashFiles('**/*.hcl') }}
           restore-keys: |
             ${{ runner.os }}-terragrunt-
-      
-      - name: Verify Cache Before Init
-        run: ls -lah /home/runner/.terragrunt-cache/registry.terraform.io || echo "Cache is empty"
 
       - name: Check Cached Provider After Init
-        run: ls -lah /home/runner/.terragrunt-cache/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64/
+        run: echo $TERRAGRUNT_PROVIDER_CACHE_DIR
       
       - name: Init Terraform configuration
         run: |
-          export TG_PROVIDER_CACHE_DIR=/home/runner/.terragrunt-cache
-          terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir "$TG_PROVIDER_CACHE_DIR"
-      
-      - name: Check Cached Provider After Init
-        run: ls -lah /home/runner/.terragrunt-cache/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64/
+          terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR
       
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
-          path: /home/runner/.terragrunt-cache
+          path: $TERRAGRUNT_PROVIDER_CACHE_DIR
           key: ${{ runner.os }}-terragrunt-${{ env.CACHE_DATE }}-${{ hashFiles('**/*.hcl') }}
