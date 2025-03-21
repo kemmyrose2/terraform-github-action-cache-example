@@ -38,7 +38,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64
-          key: terragrunt-cache-${{ runner.os }}-${{ github.sha }}
+          key: terragrunt-cache-${{ runner.os }}-${{ github.run_id }}
           restore-keys: |
             terragrunt-cache-${{ runner.os }}-
             
@@ -55,7 +55,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64
-          key: terragrunt-cache-${{ runner.os }}-${{ github.sha }}
+          key: terragrunt-cache-${{ runner.os }}-${{ github.run_id }}
 
 
 
