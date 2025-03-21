@@ -47,7 +47,7 @@ jobs:
       
       - name: Init Terraform configuration
         run: |
-          terragrunt run-all init --terragrunt-non-interactive --terragrunt-provider-cache --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR
+          terragrunt run-all init --terragrunt-non-interactive --provider-cache --provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR
       
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
