@@ -1,8 +1,7 @@
 name: Terraform provider cache example
 
 on:
-  push:
-  workflow_dispatch:
+  push
 
 env:
   TERRAGRUNT_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
@@ -39,7 +38,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64
-          key: terragrunt-cache-${{ runner.os }}-${{ github.run_id }}
+          key: terragrunt-cache-${{ runner.os }}-aws-provider
           restore-keys: |
             terragrunt-cache-${{ runner.os }}-
             
@@ -50,13 +49,12 @@ jobs:
         run: |
           terragrunt run-all init \
             --terragrunt-provider-cache \
-            --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR 
-      
+            --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR/registry.terraform.io
+          
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64
-          key: terragrunt-cache-${{ runner.os }}-${{ github.run_id }}
-
+          key: terragrunt-cache-${{ runner.os }}-aws-provider
 
 
