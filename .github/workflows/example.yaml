@@ -51,6 +51,11 @@ jobs:
           terragrunt run-all init \
             --terragrunt-provider-cache \
             --terragrunt-provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR 
+
+      - name: List Cached Plugin Directory 
+        run: ls \-alh $TERRAGRUNT\_PROVIDER\_CACHE\_DIR/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64
+
+
       
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
