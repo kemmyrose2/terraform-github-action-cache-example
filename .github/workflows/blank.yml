@@ -1,7 +1,8 @@
-name: Terraform provider cache example
+name: Terraform provider cache example 2
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   main:
@@ -27,7 +28,7 @@ jobs:
           restore-keys: |
             terraform-${{ runner.os }}-
       - name: ls 
-        run: ls -lah $HOME/.terraform.d/plugin-cach
+        run: ls -lah $HOME/.terraform.d/plugin-cache
       - name: Init Terraform configuration
         run: |
           terraform init
