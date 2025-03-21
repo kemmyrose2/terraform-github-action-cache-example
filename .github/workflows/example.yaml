@@ -38,7 +38,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: terragrunt-cache-${{ runner.os }}-v1
+          key: terragrunt-cache-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             terragrunt-cache-${{ runner.os }}-
             
@@ -55,5 +55,6 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: terragrunt-cache-${{ runner.os }}-v1
+          key: terragrunt-cache-${{ runner.os }}-${{ github.sha }}
+
 
