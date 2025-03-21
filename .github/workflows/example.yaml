@@ -4,8 +4,8 @@ on:
   push:
   workflow_dispatch:
 
-env:
-  TERRAGRUNT_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
+# env:
+#   TERRAGRUNT_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
 
 jobs:
   main:
@@ -40,13 +40,14 @@ jobs:
           echo "TF_PLUGIN_CACHE_DIR=$HOME/.terraform.d/plugin-cache" >>"$GITHUB_ENV"
           mkdir --parents "$HOME/.terraform.d/plugin-cache"
       
-      - name: Restore Terraform Cache
-        uses: actions/cache/restore@v4
+      - name: Cache Terraform
+        uses: actions/cache@v4
         with:
-          path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
+          path: |
+            ~/.terraform.d/plugin-cache
+          key: terraform-${{ runner.os }}-${{ hashFiles('**/.terraform.lock.hcl') }}
           restore-keys: |
-            terragrunt-cache-${{ runner.os }}-
+            terraform-${{ runner.os }}-
 
       - name: Debug Cache Path Before Init
         run: ls -alh ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64
@@ -56,16 +57,11 @@ jobs:
       
       - name: Init Terraform configuration
         run: |
-          export TF_PLUGIN_CACHE_DIR=$TERRAGRUNT_PROVIDER_CACHE_DIR/registry.terraform.io
-          terragrunt run-all init \
-          --provider-cache \
-          --provider-cache-dir $TERRAGRUNT_PROVIDER_CACHE_DIR/registry.terraform.io/hashicorp/aws/5.38.0/linux_amd64 \
-          -get=false
-          
-      - name: Save Terraform Cache
-        uses: actions/cache/save@v4
-        with:
-          path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
+          terragrunt init
+      # - name: Save Terraform Cache
+      #   uses: actions/cache/save@v4
+      #   with:
+      #     path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
+      #     key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
 
 
