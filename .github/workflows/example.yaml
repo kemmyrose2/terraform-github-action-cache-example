@@ -1,7 +1,8 @@
 name: Terraform provider cache example
 
 on:
-  push
+  push:
+  workflow_dispatch:
 
 env:
   TERRAGRUNT_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
