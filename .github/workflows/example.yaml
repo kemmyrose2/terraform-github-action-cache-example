@@ -52,7 +52,7 @@ jobs:
             terraform-${{ runner.os }}-
 
       - name: Debug Cache Path Before Init
-        run: ls -alh $HOME/.terraform.d/plugin-cache
+        run: ls -alh ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
       # - name: Check Cached Provider After Init
       #   run: echo $TERRAGRUNT_PROVIDER_CACHE_DIR
       
