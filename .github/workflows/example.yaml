@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  TERRAGRUNT_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
+  TG_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
   TERRAGRUNT_DOWNLOAD_DIR: ${{ github.workspace }}/.terragrunt-cache
 
 jobs:
