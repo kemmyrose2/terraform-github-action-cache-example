@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  TF_PLUGIN_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
+  TG_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
   TERRAGRUNT_DOWNLOAD_DIR: ${{ github.workspace }}/.terragrunt-cache
 
 jobs:
@@ -40,22 +40,22 @@ jobs:
 
       # - name: mkdir folder
       #   run: |
-      #     mkdir -p ${{ env.TF_PLUGIN_CACHE_DIR }} 
+      #     mkdir -p ${{ env.TG_PROVIDER_CACHE_DIR }} 
       
       - name: Cache Terraform
         uses: actions/cache/restore@v4
         with:
-          path: ${{ env.TF_PLUGIN_CACHE_DIR }}
+          path: ${{ env.TG_PROVIDER_CACHE_DIR }}
           key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
           restore-keys: |
             terragrunt-cache-${{ runner.os }}-
 
       - name: Debug Cache Path Before Init
-        run: ls -alh ${{ env.TF_PLUGIN_CACHE_DIR }}
+        run: ls -alh ${{ env.TG_PROVIDER_CACHE_DIR }}
       
       - name: Init Terraform configuration
         run: |
-          terragrunt run-all init --non-interactive
+          terragrunt run-all init --non-interactive --provider-cache-dir --provider-cache-dir ${{ env.TG_PROVIDER_CACHE_DIR }}
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
