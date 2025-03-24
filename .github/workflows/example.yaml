@@ -6,6 +6,7 @@ on:
 
 env:
   TERRAGRUNT_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
+  TERRAGRUNT_DOWNLOAD_DIR: ${{ github.workspace }}/.terragrunt-cache
 
 jobs:
   main:
