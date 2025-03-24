@@ -40,7 +40,7 @@ jobs:
 
       - name: mkdir folder
         run: |
-          mkdir -p ${{ env.TG_PROVIDER_CACHE_DIR }} 
+          mkdir -p ${{ env.TF_PLUGIN_CACHE_DIR }} 
       
       - name: Cache Terraform
         uses: actions/cache/restore@v4
