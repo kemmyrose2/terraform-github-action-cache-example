@@ -4,8 +4,8 @@ on:
   push:
   workflow_dispatch:
 
-# env:
-#   TERRAGRUNT_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
+env:
+  TERRAGRUNT_PROVIDER_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
 
 jobs:
   main:
@@ -36,7 +36,7 @@ jobs:
         run: echo "CACHE_DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
 
       - name: mkdir folder
-        run: echo "TF_PLUGIN_CACHE_DIR=$HOME/.terraform.d/plugin-cache" >>"$GITHUB_ENV"
+        run: echo "TF_PLUGIN_CACHE_DIR=${{ env. TERRAGRUNT_PROVIDER_CACHE_DIR }}" >>"$GITHUB_ENV"
       
       - name: Cache Terraform
         uses: actions/cache/restore@v4
