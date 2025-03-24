@@ -59,7 +59,7 @@ jobs:
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
-          path: ${{ env.TF_PLUGIN_CACHE_DIR }}
+          path: ${{ env.TG_PROVIDER_CACHE_DIR }}
           key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
 
 
