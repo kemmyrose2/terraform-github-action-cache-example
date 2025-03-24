@@ -33,10 +33,15 @@ jobs:
           
       - name: Set Timestamp Variable
         id: date
-        run: echo "CACHE_DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+        run: |
+          echo "CACHE_DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+        
 
       - name: mkdir folder
-        run: echo "TF_PLUGIN_CACHE_DIR=${{ env. TERRAGRUNT_PROVIDER_CACHE_DIR }}" >>"$GITHUB_ENV"
+        run: |
+          echo "TF_PLUGIN_CACHE_DIR=${{ env. TERRAGRUNT_PROVIDER_CACHE_DIR }}" >>"$GITHUB_ENV"
+          mkdir -p ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }} 
+        
       
       - name: Cache Terraform
         uses: actions/cache/restore@v4
