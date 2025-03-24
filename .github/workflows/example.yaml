@@ -59,7 +59,7 @@ jobs:
       
       - name: Init Terraform configuration
         run: |
-          terragrunt run-all init
+          terragrunt run-all init --non-interactive
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
