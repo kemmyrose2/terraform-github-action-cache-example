@@ -46,8 +46,7 @@ jobs:
       - name: Cache Terraform
         uses: actions/cache/restore@v4
         with:
-          path: |
-            ~/.terraform.d/plugin-cache
+          path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
           key: terraform-${{ runner.os }}-${{ hashFiles('**/.terraform.lock.hcl') }}
           restore-keys: |
             terraform-${{ runner.os }}-
