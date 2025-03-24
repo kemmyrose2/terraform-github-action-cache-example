@@ -59,10 +59,10 @@ jobs:
       - name: Init Terraform configuration
         run: |
           terragrunt init
-      # - name: Save Terraform Cache
-      #   uses: actions/cache/save@v4
-      #   with:
-      #     path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-      #     key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
+      - name: Save Terraform Cache
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
+          key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
 
 
