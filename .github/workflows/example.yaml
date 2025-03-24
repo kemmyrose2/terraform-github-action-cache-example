@@ -45,13 +45,13 @@ jobs:
       - name: Cache Terraform
         uses: actions/cache/restore@v4
         with:
-          path: ${{ env.TG_PROVIDER_CACHE_DIR }}
+          path: ${{ env.TF_PLUGIN_CACHE_DIR }}
           key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
           restore-keys: |
             terragrunt-cache-${{ runner.os }}-
 
       - name: Debug Cache Path Before Init
-        run: ls -alh ${{ env.TG_PROVIDER_CACHE_DIR }}
+        run: ls -alh ${{ env.TF_PLUGIN_CACHE_DIR }}
       
       - name: Init Terraform configuration
         run: |
@@ -59,7 +59,7 @@ jobs:
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
-          path: ${{ env.TG_PROVIDER_CACHE_DIR }}
+          path: ${{ env.TF_PLUGIN_CACHE_DIR }}
           key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
 
 
