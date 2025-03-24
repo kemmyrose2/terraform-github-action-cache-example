@@ -40,7 +40,6 @@ jobs:
 
       - name: mkdir folder
         run: |
-          echo "TF_PLUGIN_CACHE_DIR=${{ env. TERRAGRUNT_PROVIDER_CACHE_DIR }}" >>"$GITHUB_ENV"
           mkdir -p ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }} 
         
       
