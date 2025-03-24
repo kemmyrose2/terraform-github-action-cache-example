@@ -40,22 +40,18 @@ jobs:
 
       - name: mkdir folder
         run: |
-          mkdir -p ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }} 
-        
+          mkdir -p ${{ env.TG_PROVIDER_CACHE_DIR }} 
       
       - name: Cache Terraform
         uses: actions/cache/restore@v4
         with:
-          path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
+          path: ${{ env.TG_PROVIDER_CACHE_DIR }}
           key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
           restore-keys: |
             terragrunt-cache-${{ runner.os }}-
-            
 
       - name: Debug Cache Path Before Init
-        run: ls -alh ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-      # - name: Check Cached Provider After Init
-      #   run: echo $TERRAGRUNT_PROVIDER_CACHE_DIR
+        run: ls -alh ${{ env.TG_PROVIDER_CACHE_DIR }}
       
       - name: Init Terraform configuration
         run: |
@@ -63,7 +59,7 @@ jobs:
       - name: Save Terraform Cache
         uses: actions/cache/save@v4
         with:
-          path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
+          path: ${{ env.TG_PROVIDER_CACHE_DIR }}
           key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
 
 
