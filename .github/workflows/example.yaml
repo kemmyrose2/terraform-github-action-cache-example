@@ -35,12 +35,12 @@ jobs:
       - name: Set Timestamp Variable
         id: date
         run: |
-          echo "TF_PLUGIN_CACHE_DIR=$HOME/.terraform.d/plugin-cache" >>"$GITHUB_ENV"
           echo "CACHE_DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
         
 
       - name: mkdir folder
         run: |
+          echo "TF_PLUGIN_CACHE_DIR=$HOME/.terraform.d/plugin-cache" >>"$GITHUB_ENV"
           mkdir -p ${{ env.TG_PROVIDER_CACHE_DIR }} 
       
       - name: Cache Terraform
