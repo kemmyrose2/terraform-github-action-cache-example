@@ -38,9 +38,9 @@ jobs:
           echo "CACHE_DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
         
 
-      - name: mkdir folder
-        run: |
-          mkdir -p ${{ env.TF_PLUGIN_CACHE_DIR }} 
+      # - name: mkdir folder
+      #   run: |
+      #     mkdir -p ${{ env.TF_PLUGIN_CACHE_DIR }} 
       
       - name: Cache Terraform
         uses: actions/cache/restore@v4
