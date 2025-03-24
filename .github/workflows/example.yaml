@@ -47,9 +47,10 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
-          key: terraform-${{ runner.os }}-${{ hashFiles('**/.terraform.lock.hcl') }}
+          key: terragrunt-cache-${{ runner.os }}-${{ env.CACHE_DATE }}
           restore-keys: |
-            terraform-${{ runner.os }}-
+            terragrunt-cache-${{ runner.os }}-
+            
 
       - name: Debug Cache Path Before Init
         run: ls -alh ${{ env.TERRAGRUNT_PROVIDER_CACHE_DIR }}
